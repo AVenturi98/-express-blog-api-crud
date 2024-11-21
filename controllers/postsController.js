@@ -1,6 +1,6 @@
 /*
 
-Esercizio
+Esercizio (P - 1)
 Milestone 1
 
 Come prima cosa, creiamo un controller per i nostri post, in una cartella controllers.
@@ -34,34 +34,74 @@ In Index e Destroy, controllare se il parametro si riferisce ad un post esistent
 
 Sia per la show che per la destroy fate funzionare le due API anche quando viene inviato come parametro :id lo slug del post (senza registrare nuove rotte)
 
-Buon Lavoro e buon divertimento
+--------------------------------------------------------------------------------------
 
+Esercizio (P - 2)
+
+Milestone 1
+
+Per iniziare, andiamo su Postman e prepariamo una nuova chiamata verso la nostra rotta store.
+
+Impostiamo il verbo e l’endpoint corretti
+
+Selezioniamo il tab body e scegliamo il formato raw e JSON
+
+Inseriamo come corpo della nostra request un oggetto che rappresenti un nuovo post
+
+Nota: se vogliamo avere delle immagini, inventiamole pure.
+Nota: ricordiamo che non bisogna passare l’id quando si crea una nuova risorsa: sarà il server (con l’aiuto del database) a fornirlo.
+
+Milestone 2
+
+Impostiamo il body-parser per far sì che la nostra app riesca a decifrare il request body.
+
+Poi, all’interno della rotta Store, stampiamo nel terminale i dati in arrivo, grazie a un console.log
+
+Milestone 3
+
+Implementiamo quindi la logica per aggiungere un nuovo post al nostro blog, e prepariamo la risposta adeguata.
+
+Testiamolo con postman.
+
+Milestone 4
+
+Ripetiamo il procedimento per la rotta di Update, in modo da avere la possibilità di modificare le nostre risorse.
+
+Bonus
+
+Quelli del giorno prima, se non già fatti
+
+In Update, controllare se il parametro si riferisce ad un post esistente, in caso contrario, rispondere con uno stato 404 e un messaggio d’errore, sempre in formato JSON.
+
+Aggiungere un minimo di validazione nella store per evitare di creare un post con campi undefined aggiungere un minimo di validazione anche in update e modify
+
+Buon Lavoro e buon divertimento
 */
 const posts = require('../data/posts');
+let lastID = posts.at(- 1).id;
 
 function index(req, res) {
 
     const tag = req.query.tag
 
+    const postFiltered = posts.filter((post) => post.tags.includes(tag))
     
-    let postFiltered = posts
+    let out = postFiltered
     
-    if (tag) {
-        postFiltered = posts.filter((post) => post.tags.includes(tag))
-        
-    } else if(tag !== postFiltered) {
-        
+    if (!out) {
+        console.log('errore')
         res.status(404)
-        return res.json({
+        out = {
             error: 'Post not found',
             message: 'Il post non è stato trovato'
-        })
+        }
     }
-
-    console.log(postFiltered)
     
-    console.log(`Lista dei post`)
-    res.json(postFiltered)
+    
+    // console.log(postFiltered)
+    // console.log(`Lista dei post`)
+    res.json(posts)
+    res.json(out)
 }
 
 function show(req, res) {
@@ -73,7 +113,21 @@ function show(req, res) {
 }
 
 function post(req, res) {
-
+    //estrapolo il contenuto dal server
+    const { title, slug, content, image, tags } = req.body
+    //aggiungo di un unità al ID precedente
+    lastID++
+    
+    const newPost = {
+        id: lastID,
+        title, 
+        slug, 
+        content, 
+        image, 
+        tags
+    }
+    console.log(newPost)
+    
     res.send('Creo un nuovo elemento del post')
 }
 
@@ -119,3 +173,19 @@ const destroy = (req, res) => {
 }
 
 module.exports =  { index, show, post, update, modify, destroy }
+
+/*
+
+{
+    "title": "Tiramisù",
+    "slug": "tiramisu",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur recusandae, dicta eos quis cum, tenetur sint accusamus voluptas iusto nobis officia assumenda, asperiores mollitia blanditiis. Laborum tempora cum placeat in.",
+    "image": "tiramisu.png",
+    "tags": [
+        "Dolci",
+        "Torte",
+        "Dolci con caffè"
+    ]
+}
+
+ */
