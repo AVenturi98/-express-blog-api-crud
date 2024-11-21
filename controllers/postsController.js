@@ -84,30 +84,46 @@ function index(req, res) {
 
     const tag = req.query.tag
 
-    const postFiltered = posts.filter((post) => post.tags.includes(tag))
+    const post = posts.filter((post) => post.tags.includes(tag))
     
-    let out = postFiltered
+    // let out = postFiltered
     
-    if (!out) {
-        console.log('errore')
+    // if (!out) {
+    //     console.log('errore')
+    //     res.status(404)
+    //     out = {
+    //         error: 'Post not found',
+    //         message: 'Il post non è stato trovato'
+    //     }
+    // }
+    if (!post) {
         res.status(404)
-        out = {
+        return res.json({
             error: 'Post not found',
             message: 'Il post non è stato trovato'
-        }
+        })
     }
     
     
     // console.log(postFiltered)
     // console.log(`Lista dei post`)
-    res.json(posts)
-    res.json(out)
+    // res.json(posts)
+    res.json(post)
 }
 
 function show(req, res) {
 
     const id = +req.params.id
     const post = posts.find((el) => el.id === id)
+
+    if (!post) {
+        res.status(404)
+        return res.json({
+            error: 'Post not found',
+            message: 'Il post non è stato trovato'
+        })
+    }
+
     console.log(`Elemento del post: ${id}`)
     res.json(post)
 }
@@ -115,9 +131,19 @@ function show(req, res) {
 function post(req, res) {
     //estrapolo il contenuto dal server
     const { title, slug, content, image, tags } = req.body
+    const err = { title, slug, content, image, tags } 
+
+    if ( !err.length ) {
+        res.status(404)
+        return  res.json({
+            error: `Operation incomplete`,
+            message: `${err} incomplete`
+        })
+    }
+
     //aggiungo di un unità al ID precedente
     lastID++
-    
+
     const newPost = {
         id: lastID,
         title, 
@@ -126,9 +152,11 @@ function post(req, res) {
         image, 
         tags
     }
-    console.log(newPost)
+    // console.log(newPost)
+    posts.push(newPost)
+    console.log(posts)
+    res.send('Un nuovo elemento del post creato')
     
-    res.send('Creo un nuovo elemento del post')
 }
 
 function update(req, res) {
@@ -136,7 +164,28 @@ function update(req, res) {
     const id = +req.params.id
     const post = posts.find((el) => el.id === id)
     console.log(`Aggiorno l\'elemento del post: ${id}`)
-    res.json(post)
+    // res.json(post)
+
+    if (!post) {
+        res.status(404)
+        return res.json({
+            error: 'Post not found',
+            message: 'Il post non è stato trovato'
+        })
+    }
+    
+    const { title, slug, content, image, tags } = req.body
+    
+    const postUpdate = {
+        title, 
+        slug, 
+        content, 
+        image, 
+        tags
+    }
+
+    res.json(postUpdate)
+
 }
 
 function modify(req, res) {
@@ -144,6 +193,27 @@ function modify(req, res) {
     const id = +req.params.id
     const post = posts.find((el) => el.id === id)
     console.log(`Modifico l\'elemento del post: ${id}`)
+
+    if (!post) {
+        res.status(404)
+        return res.json({
+            error: 'Post not found',
+            message: 'Il post non è stato trovato'
+        })
+    }
+
+    const { title, slug, content, image, tags } = req.body
+
+    if ({title, slug, content, image, tags }) {
+        post.title = title
+        post.slug = slug
+        post.content = content
+        post.image = image
+        post.tags = tags
+    }
+
+        
+        //     res.json(postUpdate)
     res.json(post)
 }
 
