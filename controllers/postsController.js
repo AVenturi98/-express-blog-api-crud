@@ -41,8 +41,27 @@ const posts = require('../data/posts');
 
 function index(req, res) {
 
+    const tag = req.query.tag
+
+    
+    let postFiltered = posts
+    
+    if (tag) {
+        postFiltered = posts.filter((post) => post.tags.includes(tag))
+        
+    } else if(tag !== postFiltered) {
+        
+        res.status(404)
+        return res.json({
+            error: 'Post not found',
+            message: 'Il post non è stato trovato'
+        })
+    }
+
+    console.log(postFiltered)
+    
     console.log(`Lista dei post`)
-    res.json(posts)
+    res.json(postFiltered)
 }
 
 function show(req, res) {
