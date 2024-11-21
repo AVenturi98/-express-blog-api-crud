@@ -37,10 +37,66 @@ Sia per la show che per la destroy fate funzionare le due API anche quando viene
 Buon Lavoro e buon divertimento
 
 */
+const posts = require('../data/posts');
 
 function index(req, res) {
+
     console.log(`Lista dei post`)
     res.json(posts)
 }
 
-module.exports = { index}
+function show(req, res) {
+
+    const id = +req.params.id
+    const post = posts.find((el) => el.id === id)
+    console.log(`Elemento del post: ${id}`)
+    res.json(post)
+}
+
+function post(req, res) {
+
+    res.send('Creo un nuovo elemento del post')
+}
+
+function update(req, res) {
+
+    const id = +req.params.id
+    const post = posts.find((el) => el.id === id)
+    console.log(`Aggiorno l\'elemento del post: ${id}`)
+    res.json(post)
+}
+
+function modify(req, res) {
+    
+    const id = +req.params.id
+    const post = posts.find((el) => el.id === id)
+    console.log(`Modifico l\'elemento del post: ${id}`)
+    res.json(post)
+}
+
+const destroy = (req, res) => {
+    
+    const id = +req.params.id
+    // const post = posts.find((el) => el.id === id)
+    console.log(`Cancella l\'elemento del post: ${id}`)
+    // res.json(post)
+
+    const postIndex = posts.findIndex((post) => post.id === id)
+
+    if (postIndex === -1) {
+        
+        res.status(404)
+        return res.json({
+            error: 'Post not found',
+            message: 'Il post non è stato trovato'
+        })
+
+    } 
+
+    res.sendStatus(204)
+
+    posts.splice(postIndex, 1)
+    console.log(posts)
+}
+
+module.exports =  { index, show, post, update, modify, destroy }

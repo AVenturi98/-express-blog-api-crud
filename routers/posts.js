@@ -1,52 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const posts = require('../data/posts');
-const { index } = require('../controllers/controller')
+const posts = require('../data/posts.js');
+const postsController = require('../controllers/postsController.js')
 
 //index (get)
-router.get('/', index);
+router.get('/', postsController.index);
 
-//show (get)
-router.get('/:id', (req, res) => {
-
-    const id = req.params.id
-    const post = posts.find((el) => el.id === id)
-    console.log(`Elemento del post: ${id}`)
-    res.json(post)
-});
+//show (get))
+router.get('/:id', postsController.show);
 
 
 //store (post)
-router.post('/', (req, res) => {
-    res.send('Creo un nuovo elemento del post')
-});
+router.post('/', postsController.post);
 
 
 //update (put)
-router.put('/:id', (req, res) => {
-
-    const id = req.params.id
-    const post = posts.find((el) => el.id === id)
-    console.log(`Aggiorno l\'elemento del post: ${id}`)
-    res.json(post)
-});
+router.put('/:id', postsController.update);
 
 //modify (patch)
-router.patch('/:id', (req, res) => {
-    
-    const id = req.params.id
-    const post = posts.find((el) => el.id === id)
-    console.log(`Modifico l\'elemento del post: ${id}`)
-    res.json(post)
-});
+router.patch('/:id', postsController.modify);
 
 //destroy (delete)
-router.delete('/:id', (req, res) => {
-
-    const id = req.params.id
-    const post = posts.find((el) => el.id === id)
-    console.log(`Cancella l\'elemento del post: ${id}`)
-    res.json(post)
-});
+router.delete('/:id', postsController.destroy);
 
 module.exports = router
