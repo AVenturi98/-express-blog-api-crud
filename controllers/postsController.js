@@ -30,7 +30,7 @@ Bonus
 
 Implementare un filtro di ricerca nella index che mostri solo i post che hanno un determinato Tag
 
-In Index e Destroy, controllare se il parametro si riferisce ad un post esistente, in caso contrario, rispondere con uno stato 404 e un messaggio d’errore, sempre in formato JSON.
+In Show e Destroy, controllare se il parametro si riferisce ad un post esistente, in caso contrario, rispondere con uno stato 404 e un messaggio d’errore, sempre in formato JSON.
 
 Sia per la show che per la destroy fate funzionare le due API anche quando viene inviato come parametro :id lo slug del post (senza registrare nuove rotte)
 
@@ -82,21 +82,11 @@ let lastID = posts.at(- 1).id;
 
 function index(req, res) {
 
-    const tag = req.query.tag
-
+    const tag = req.query.tag;
     const post = posts.filter((post) => post.tags.includes(tag))
     
-    // let out = postFiltered
     
-    // if (!out) {
-    //     console.log('errore')
-    //     res.status(404)
-    //     out = {
-    //         error: 'Post not found',
-    //         message: 'Il post non è stato trovato'
-    //     }
-    // }
-    if (!post) {
+    if (post.length === 0) {
         res.status(404)
         return res.json({
             error: 'Post not found',
@@ -104,8 +94,6 @@ function index(req, res) {
         })
     }
     
-    
-    // console.log(postFiltered)
     // console.log(`Lista dei post`)
     // res.json(posts)
     res.json(post)
@@ -131,13 +119,14 @@ function show(req, res) {
 function post(req, res) {
     //estrapolo il contenuto dal server
     const { title, slug, content, image, tags } = req.body
-    const err = { title, slug, content, image, tags } 
+    
+    const error = validate(req)
 
-    if ( !err.length ) {
+    if (error.length) {
         res.status(404)
         return  res.json({
-            error: `Operation incomplete`,
-            message: `${err} incomplete`
+            error: `Data required`,
+            message: error
         })
     }
 
@@ -244,6 +233,20 @@ const destroy = (req, res) => {
 
 module.exports =  { index, show, post, update, modify, destroy }
 
+const validate = (req) => {
+    const { title, slug, content, image, tags } = req.body
+
+    const errors = []
+
+    if (!title) errors.push('Title incomplete')
+    if (!slug) errors.push('Slug incomplete')
+    if (!content) errors.push('Content incomplete')
+    if (!image) errors.push('Image incomplete')
+    if (!tags) errors.push('Tags incomplete')
+
+    return errors
+}
+
 /*
 
 {
@@ -255,7 +258,11 @@ module.exports =  { index, show, post, update, modify, destroy }
         "Dolci",
         "Torte",
         "Dolci con caffè"
-    ]
+        ]
 }
 
- */
+*/
+
+//  PER MODIFICARE STRINGA : CONCATENARE IL RESTANTE ALLA MODIFICA
+
+// * Sia per la show che per la destroy fate funzionare le due API anche quando viene inviato come parametro :id lo slug del post (senza registrare nuove rotte)
