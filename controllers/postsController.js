@@ -82,8 +82,10 @@ let lastID = posts.at(- 1).id;
 
 function index(req, res) {
 
-    const tag = req.query.tag;
+    const teg = req.query.tag;
+    const tag = teg[0].toUpperCase() + teg.slice(1) 
     const post = posts.filter((post) => post.tags.includes(tag))
+
     
     
     if (post.length === 0) {
