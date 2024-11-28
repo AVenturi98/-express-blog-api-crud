@@ -138,15 +138,15 @@ function post(req, res) {
     //estrapolo il contenuto dal server
     const { title, slug, content, image, tags } = req.body
     
-    const error = validate(req)
+    // const error = validate(req)
 
-    if (error.length) {
-        res.status(404)
-        return  res.json({
-            error: `Data required`,
-            message: error
-        })
-    }
+    // if (error.length) {
+    //     res.status(404)
+    //     return  res.json({
+    //         error: `Data required`,
+    //         message: error
+    //     })
+    // }
 
     //aggiungo di un unità al ID precedente
     lastID++
@@ -251,19 +251,19 @@ const destroy = (req, res) => {
 
 module.exports =  { index, show, post, update, modify, destroy }
 
-const validate = (req) => {
-    const { title, slug, content, image, tags } = req.body
+// const validate = (req) => {
+//     const { title, slug, content, image, tags } = req.body
 
-    const errors = []
+//     const errors = []
 
-    if (!title) errors.push('Title incomplete')
-    if (!slug) errors.push('Slug incomplete')
-    if (!content) errors.push('Content incomplete')
-    if (!image) errors.push('Image incomplete')
-    if (!tags) errors.push('Tags incomplete')
+//     if (!title) errors.push('Title incomplete')
+//     if (!slug) errors.push('Slug incomplete')
+//     if (!content) errors.push('Content incomplete')
+//     if (!image) errors.push('Image incomplete')
+//     if (!tags) errors.push('Tags incomplete')
 
-    return errors
-}
+//     return errors
+// }
 
 /*
 

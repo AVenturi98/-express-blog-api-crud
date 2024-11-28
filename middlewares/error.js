@@ -17,4 +17,34 @@ function errorShow(req, res, next) {
     }
 }
 
-module.exports = { errorShow }
+function errorPost(req, res, next) {
+
+    const error = validate(req)
+
+    if (!error.length) {
+        next()
+    } else {
+        res.status(404)
+        res.json({
+            error: `Data required`,
+            message: error
+        })
+    }
+}
+
+module.exports = { errorShow, errorPost }
+
+
+const validate = (req) => {
+    const { title, slug, content, image, tags } = req.body
+
+    const errors = []
+
+    if (!title) errors.push('Title incomplete')
+    if (!slug) errors.push('Slug incomplete')
+    if (!content) errors.push('Content incomplete')
+    if (!image) errors.push('Image incomplete')
+    if (!tags) errors.push('Tags incomplete')
+
+    return errors
+}

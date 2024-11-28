@@ -11,7 +11,7 @@ router.get('/', postsController.index);
 router.get('/:id', error.errorShow, postsController.show);
 
 //store (post)
-router.post('/', postsController.post);
+router.post('/', error.errorPost, postsController.post);
 
 //update (put)
 router.put('/:id', postsController.update);
