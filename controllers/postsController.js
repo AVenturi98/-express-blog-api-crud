@@ -119,19 +119,19 @@ function index(req, res) {
 
 function show(req, res) {
 
-    const id = +req.params.id
-    const post = posts.find((el) => el.id === id)
+    // const id = parseInt(req.params.id)
+    // const post = posts.find((el) => el.id === id)
 
-    if (!post) {
-        res.status(404)
-        return res.json({
-            error: 'Post not found',
-            message: 'Il post non è stato trovato'
-        })
-    }
+    // if (!post) {
+    //     res.status(404)
+    //     return res.json({
+    //         error: 'Post not found',
+    //         message: 'Il post non è stato trovato'
+    //     })
+    // }
 
-    console.log(`Elemento del post: ${id}`)
-    res.json(post)
+    // console.log(`Elemento del post: ${id}`)
+    res.json(req.post)
 }
 
 function post(req, res) {
