@@ -9,10 +9,8 @@ router.get('/', postsController.index);
 //show (get))
 router.get('/:id', postsController.show);
 
-
 //store (post)
 router.post('/', postsController.post);
-
 
 //update (put)
 router.put('/:id', postsController.update);

@@ -75,16 +75,32 @@ In Update, controllare se il parametro si riferisce ad un post esistente, in cas
 
 Aggiungere un minimo di validazione nella store per evitare di creare un post con campi undefined aggiungere un minimo di validazione anche in update e modify
 
-Buon Lavoro e buon divertimento
+--------------------------------------------------------------------------
+
+Esercizio ( P - 3)
+
+Dopo aver completato tutte le operazioni CRUD, completiamo le nostre API inserendo un middleware per la gestione delle rotte non registrate e uno per la gestione degli errori.
+
+Se viene chiamato un endpoint inesistente, un middleware dovrà rispondere un messaggio e uno status appropriato.
+
+Se viene generato un errore, un middleware si occuperà di rispondere con un messaggio e uno status appropriato.
+
+Bonus:
+
+Gestite l’errore 404 dei post con un middleware invece che dentro ogni singolo metodo del controller (come visto in classe con router.param('id', …) )
+
+Se avete aggiunto la validazione su store e update, modificate queste logiche in modo da applicarle con un middleware invece che dentro al controller
+
 */
+
 const posts = require('../data/posts');
 let lastID = posts.at(- 1).id;
 
 function index(req, res) {
 
     const teg = req.query.tag;
-    const tag = teg[0].toUpperCase() + teg.slice(1) 
-    const post = posts.filter((post) => post.tags.includes(tag))
+    // const tag = teg[0].toUpperCase() + teg.slice(1) 
+    // const post = posts.filter((post) => post.tags.includes(tag))
 
     
     
@@ -96,9 +112,9 @@ function index(req, res) {
         })
     }
     
-    // console.log(`Lista dei post`)
-    // res.json(posts)
-    res.json(post)
+    console.log(`Lista dei post`)
+    res.json(posts)
+    // res.json(post)
 }
 
 function show(req, res) {
@@ -259,12 +275,11 @@ const validate = (req) => {
     "tags": [
         "Dolci",
         "Torte",
-        "Dolci con caffè"
+        "Caffè"z
         ]
 }
 
 */
 
-//  PER MODIFICARE STRINGA : CONCATENARE IL RESTANTE ALLA MODIFICA
 
 // * Sia per la show che per la destroy fate funzionare le due API anche quando viene inviato come parametro :id lo slug del post (senza registrare nuove rotte)
