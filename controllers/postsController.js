@@ -173,13 +173,13 @@ function update(req, res) {
     console.log(`Aggiorno l\'elemento del post: ${id}`)
     // res.json(post)
 
-    if (!post) {
-        res.status(404)
-        return res.json({
-            error: 'Post not found',
-            message: 'Il post non è stato trovato'
-        })
-    }
+    // if (!post) {
+    //     res.status(404)
+    //     return res.json({
+    //         error: 'Post not found',
+    //         message: 'Il post non è stato trovato'
+    //     })
+    // }
     
     const { title, slug, content, image, tags } = req.body
     
@@ -197,17 +197,17 @@ function update(req, res) {
 
 function modify(req, res) {
     
-    const id = +req.params.id
-    const post = posts.find((el) => el.id === id)
+    // const id = +req.params.id
+    const post = posts.find((el) => el.id === +req.params.id)
     console.log(`Modifico l\'elemento del post: ${id}`)
 
-    if (!post) {
-        res.status(404)
-        return res.json({
-            error: 'Post not found',
-            message: 'Il post non è stato trovato'
-        })
-    }
+    // if (!post) {
+    //     res.status(404)
+    //     return res.json({
+    //         error: 'Post not found',
+    //         message: 'Il post non è stato trovato'
+    //     })
+    // }
 
     const { title, slug, content, image, tags } = req.body
 
@@ -220,28 +220,28 @@ function modify(req, res) {
     }
 
         
-        //     res.json(postUpdate)
+    // res.json(postUpdate)
     res.json(post)
 }
 
 const destroy = (req, res) => {
     
-    const id = +req.params.id
+    // const id = +req.params.id
     // const post = posts.find((el) => el.id === id)
-    console.log(`Cancella l\'elemento del post: ${id}`)
+    // console.log(`Cancella l\'elemento del post: ${id}`)
     // res.json(post)
 
-    const postIndex = posts.findIndex((post) => post.id === id)
+    const postIndex = posts.findIndex((post) => post.id === +req.params.id)
 
-    if (postIndex === -1) {
+    // if (postIndex === -1) {
         
-        res.status(404)
-        return res.json({
-            error: 'Post not found',
-            message: 'Il post non è stato trovato'
-        })
+    //     res.status(404)
+    //     return res.json({
+    //         error: 'Post not found',
+    //         message: 'Il post non è stato trovato'
+    //     })
 
-    } 
+    // } 
 
     res.sendStatus(204)
 

@@ -8,19 +8,19 @@ const error = require('../middlewares/error.js')
 router.get('/', postsController.index);
 
 //show (get))
-router.get('/:id', error.errorShow, postsController.show);
+router.get('/:id', error.eroorNotFound, postsController.show);
 
 //store (post)
 router.post('/', error.errorPost, postsController.post);
 
 //update (put)
-router.put('/:id', postsController.update);
+router.put('/:id', error.eroorNotFound, postsController.update);
 
 //modify (patch)
 router.patch('/:id', postsController.modify);
 
 //destroy (delete)
-router.delete('/:id', postsController.destroy);
+router.delete('/:id', error.errorDestoy, postsController.destroy);
 
 //gestione degli errori
 // router.param('id', (req, res, next) => {

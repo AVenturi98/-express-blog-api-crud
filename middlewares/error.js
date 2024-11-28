@@ -1,6 +1,6 @@
 const posts = require('../data/posts.js');
 
-function errorShow(req, res, next) {
+function eroorNotFound(req, res, next) {
   
     const id = +req.params.id
     const post = posts.find((el) => el.id === id)
@@ -32,7 +32,22 @@ function errorPost(req, res, next) {
     }
 }
 
-module.exports = { errorShow, errorPost }
+function errorDestoy(req, res, next) {
+    
+    const postIndex = posts.findIndex((post) => post.id === +req.params.id)
+
+    if (postIndex === -1) {
+        
+        res.status(404)
+        return res.json({
+            error: 'Post not found',
+            message: 'Il post non è stato trovato'
+        })
+
+    } else next()
+}
+
+module.exports = { eroorNotFound, errorPost, errorDestoy }
 
 
 const validate = (req) => {
